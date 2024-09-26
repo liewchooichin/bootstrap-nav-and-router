@@ -6,7 +6,7 @@ import { Page1, Page2, Page3, Page4, Page5, Page6 }
   from "../components/Pages";
 import { Page21, Page22 } from "../components/Pages";
 import { PageWithSidebar } from "../components/PageWithSidebar";
-
+import { WebAPI } from "../webapi/WebAPI";
 
 export const router = createBrowserRouter([
   {
@@ -19,8 +19,8 @@ export const router = createBrowserRouter([
         element: <Index />,
       },
       {
-        path: "/page1",
-        element: <Page1 />,
+        path: "/webapi",
+        element: <WebAPI />,
       },
       {
         path: "/page2",

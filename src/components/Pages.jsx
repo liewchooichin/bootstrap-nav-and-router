@@ -5,15 +5,9 @@ import { Outlet } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
 export function Page1(){
-  return (
+  return(
     <>
-    <h1>Page 1</h1>
-    <Link to="/page3" 
-      preventScrollReset={true}
-      state = {{animal: "pangolin"}}
-    >
-      <Button>To Page 3</Button>
-    </Link>
+      <h1>Page 1</h1>
     </>
   )
 }
@@ -72,7 +66,15 @@ export function Page3(){
 
 export function Page4(){
   return (
-    <h1>Action 4</h1>
+    <>
+    <h1>Page 4</h1>
+    <Link to="/page3" 
+      preventScrollReset={true}
+      state = {{animal: "pangolin"}}
+    >
+      <Button>To Page 3</Button>
+    </Link>
+    </>
   )
 }
 

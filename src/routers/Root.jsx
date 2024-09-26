@@ -31,7 +31,7 @@ function Root() {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link as={Link} to="/page1">Page 1</Nav.Link>
+                  <Nav.Link as={Link} to="/webapi">Web API</Nav.Link>
                   <Nav.Link as={Link} to="/page2">Page 2</Nav.Link>
                   <NavDropdown
                     title="Dropdown"
@@ -62,7 +62,7 @@ function Root() {
           </Container>
         </Navbar>
       }
-      <h1>Here is the content for outlet</h1>
+      
       <Outlet />
     </Container>
   );
