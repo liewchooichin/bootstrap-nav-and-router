@@ -17,7 +17,7 @@ function Root() {
       {
         <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-3">
           <Container fluid>
-          <Navbar.Brand as={Link} to="/">Navbar Offcanvas</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/">Navbar</Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
@@ -32,7 +32,7 @@ function Root() {
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
                   <Nav.Link as={Link} to="/webapi">Web API</Nav.Link>
-                  <Nav.Link as={Link} to="/page2">Page 2</Nav.Link>
+                  <Nav.Link as={Link} to="/quiz">Quiz</Nav.Link>
                   <NavDropdown
                     title="Dropdown"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}

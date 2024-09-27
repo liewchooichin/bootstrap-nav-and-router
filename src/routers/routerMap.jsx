@@ -7,6 +7,9 @@ import { Page1, Page2, Page3, Page4, Page5, Page6 }
 import { Page21, Page22 } from "../components/Pages";
 import { PageWithSidebar } from "../components/PageWithSidebar";
 import { WebAPI } from "../webapi/WebAPI";
+import { QuizMain } from "../quiz/QuizMain";
+import { QuestionPage } from "../quiz/QuestionPage";
+
 
 export const router = createBrowserRouter([
   {
@@ -23,16 +26,12 @@ export const router = createBrowserRouter([
         element: <WebAPI />,
       },
       {
-        path: "/page2",
-        element: <Page2 />,
+        path: "/quiz",
+        element: <QuizMain />,
         children: [
           {
-            path: "/page2/page21",
-            element: <Page21 />,
-          },
-          {
-            path: "/page2/page22",
-            element: <Page22 />,
+            path: "/quiz/:questionId",
+            element: <QuestionPage />,
           },
         ],
       },

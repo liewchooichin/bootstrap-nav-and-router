@@ -1,0 +1,21 @@
+/** To list all the question and answers. */
+
+  return(
+    <>
+    <h1>Question </h1>
+    {
+      questionList.map((q) => (<>
+        <p key={q.id}>{q.id}: {q.questionText}</p>
+        <ListGroup>
+        {
+          q.answers.map((a) => (<>
+            <ListGroup.Item>
+              {a.answerText}
+              </ListGroup.Item>
+          </>))  
+        }  
+        </ListGroup>
+      </>))
+    }
+    </>
+  )
