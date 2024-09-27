@@ -1,27 +1,41 @@
 import { useState, useEffect } from "react";
-import { getPosts, deletePost } from "./postService";
-import axios from "axios";
+import { getPosts, deletePost, updatePost } from "./postService";
 import { ListGroup } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { NewPostForm } from "./NewPostForm";
 
+//initial post
+const initialPost = {
+  id: 0,
+  title: "",
+  body: "",
+}
 
 export function Posts(){
 
   const [posts, setPosts] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [editPost, setEditPost] = useState(initialPost);
   
   useEffect(()=>{
-    getPosts()
-      .then(function(response){
-        console.log(response.status);
-        setPosts(response.data);
-      })
-      .catch(function(err){
-        console.log(err)
-      });
+    let ignore = false;
+    // establish the connection
+    if(!ignore){
+      getPosts()
+        .then(function(response){
+          console.log(response.status);
+          setPosts(response.data);
+        })
+        .catch(function(err){
+          console.log(err)
+        });
+    } 
+    // clean up
+    return (()=>{
+      ignore = true;
+      console.log("Clean up connection.");
+    })
   }, []);
-
 
   function handleDeletePost(postId){  
     // disable other delete buttons
@@ -47,17 +61,40 @@ export function Posts(){
       });
   };
 
+  // handle update post
+  function handleEditPost(post){
+    const newItem = {
+      id: post.id,
+      title: post.title,
+      body: post.body,
+    }
+    setEditPost(newItem);
+  }
+
   return(
     <>
-    <h1>Getting posts</h1>
-    <NewPostForm posts={posts} setPosts={setPosts}></NewPostForm>
-    <p>Number of posts: {posts.length}</p>
+    <h1>Posts</h1>
+    <NewPostForm 
+      posts={posts} setPosts={setPosts}
+      editPost={editPost} setEditPost={setEditPost}
+      ></NewPostForm>
+    <h4>Number of posts: {posts.length}</h4>
     <ListGroup>
     {
       posts.map((p)=>(
         <ListGroup.Item key={p.id}>
           <h3>{p.id} {p.title}</h3>
           <p>{p.body}</p>
+
+          <div className="grid text-center">
+          <Button
+            type="button"
+            name="btnEditPost"
+            disabled={isProcessing}
+            onClick={()=>handleEditPost(p)}
+          >Edit
+          </Button>
+
           <Button
             type="button"
             name="btnDeletePost"
@@ -65,6 +102,7 @@ export function Posts(){
             onClick={()=>handleDeletePost(p.id)}
           >Delete
           </Button>
+          </div>
         </ListGroup.Item>
       ))
     }

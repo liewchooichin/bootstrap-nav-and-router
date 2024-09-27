@@ -37,4 +37,17 @@ function createPost(post){
   })
 }
 
-export { api, getPosts, deletePost, createPost, };
+function updatePost(postId, post){
+  const endpoint = `/posts/${postId}`;
+  return axios({
+    baseURL: BASE_URL,
+    method: "PUT",
+    url: endpoint,
+    data: post,
+    headers: {
+      'Content-Type':  'application/json; charset=UTF-8',
+    },
+  })
+}
+
+export { api, getPosts, deletePost, createPost, updatePost, };
