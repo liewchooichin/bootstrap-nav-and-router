@@ -1,3 +1,4 @@
+import Stack from "react-bootstrap/Stack"
 import ListGroup from "react-bootstrap/ListGroup";
 import { Link, Outlet } from "react-router-dom";
 import { useState, useReducer } from "react";
@@ -59,6 +60,7 @@ export function QuizMain(){
     <>
       <h1>Quiz</h1>
       <p>Challenge your knowledge. Start the quiz.</p>
+      
       <Button
         type="button"
         id="btnStart"
@@ -66,6 +68,7 @@ export function QuizMain(){
         onClick={handleBtnStart}
       >Start
       </Button>
+      
       {quizSection}
     </>
   )
