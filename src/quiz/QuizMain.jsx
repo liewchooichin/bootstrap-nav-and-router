@@ -58,11 +58,11 @@ export function QuizMain(){
         id="btnScore"
         name="btnScore"
         onClick={handleBtnScore}
-      >Score
+      >{scoreQuiz ? "Close Score" : "Show Score"}
       </Button>
 
       {scoreQuiz && (<p>Your score</p>)}
-      
+
       <QuestionPage 
         questionList={questionList}
         answerStateList={answerStateList}
