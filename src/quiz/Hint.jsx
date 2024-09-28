@@ -12,7 +12,7 @@ function CustomToggle({ children, eventKey }) {
   return (
     <button
       type="button"
-      style={{ backgroundColor: 'white' }}
+      style={{ borderColor: 'darkgrey' }}
       onClick={decoratedOnClick}
     >
       {children}
@@ -34,10 +34,10 @@ export function Hint({showHint, hintText, explanationText}){
   return (
     <Accordion>
       <Card>
-        <Card.Header>
+        <Card.Header className="d-flex justify-content-center">
           <CustomToggle eventKey="0">
-            {showHint && (<>⚡ Hint</>)}
-            {!showHint && (<>✨ Explanation</>)}
+            {showHint && (<span className="text-info">⚡ Hint</span>)}
+            {!showHint && (<span className="text-success">✨ Explanation</span>)}
             </CustomToggle>
         </Card.Header>
         <Accordion.Collapse eventKey="0">

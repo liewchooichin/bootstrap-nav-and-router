@@ -1,12 +1,9 @@
 import PropTypes from "prop-types";
-import { useReducer, useEffect, useState } from "react";
+import { useState } from "react";
 import { ListGroup } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import { quizData } from "./quizData";
 import { TickMark } from "./TickMark";
-import { answerStateReducer } from "./answerStateReducer";
-
+import Stack from "react-bootstrap/Stack";
 
 AnswerSection.propTypes = {
   questionItem: PropTypes.shape({
@@ -73,12 +70,13 @@ export function AnswerSection({
     {
       answerList.map((a) => (
       <ListGroup.Item key={a.id}>
+      <Stack direction="horizontal" gap={3}>
       <Form.Check
         key={`answer_${questionItem.id}_${a.id}`}
         type="radio"
         id={`radio${questionItem.id}-${a.id}`}
         name={`radio${questionItem.id}`}
-        label={`${a.answerText} ${a.correct}`}
+        label={`${a.answerText}`}
         value={a.correct}
         checked={answerState.hasBeenAnswered && (answerState.answerId===a.id)}
         onChange={(e)=>(handleAnswerChange(e, a))}
@@ -88,6 +86,7 @@ export function AnswerSection({
         ) &&
         <TickMark answerItem={a}></TickMark>
       }
+      </Stack>
       </ListGroup.Item>
     ))}
     </Form.Group>
