@@ -8,7 +8,9 @@ import Button from "react-bootstrap/Button";
 import { questionPageReducers } from "./questionPageReducers";
 import { AnswerSection } from "./AnswerSection";
 import { hasAnsweredReducer } from "./hasAnsweredReducer";
-
+import { initialAnswerList } from "./answerStateStructure";
+import { answerStateReducer } from "./answerStateReducer";
+import { Hint } from "./Hint.jsx";
 
 QuestionPage.propTypes = {
   questionList: PropTypes.arrayOf(PropTypes.shape({
@@ -30,19 +32,14 @@ export function QuestionPage(
   //const questionId = params.questionId;
   const [questionNum, questionNumDispatch] = 
     useReducer(questionPageReducers, 0);
-  const [hasAnswered, hasAnsweredDispatch] = 
-    useReducer(hasAnsweredReducer, false);
-  
+  const [answerStateList, answerStateDispatch] =
+    useReducer(answerStateReducer, initialAnswerList);  
+
   function handleNext(){
     questionNumDispatch({
       type: "next",
       questionNum: questionNum,
-    }),
-    // also reset the hint for the new question
-    hasAnsweredDispatch({
-      type: "answer_selected",
-      answerSelected: false,
-    })
+    });
   }
   function handlePrev(){
     questionNumDispatch({
@@ -54,11 +51,12 @@ export function QuestionPage(
   // Get the current question according to 
   // the number.
   const questionItem = questionList[questionNum];
+  const answerState = answerStateList[questionNum];
 
   // if no answer is selected, show Hint.
   // if any answer is selected, show Explanation.
   let hintSection;
-  if(!hasAnswered){
+  if(!answerState.hasBeenAnswered){
     hintSection = (
       <>
       <p>Hint</p>
@@ -67,7 +65,7 @@ export function QuestionPage(
   } else {
     hintSection = (
       <>
-      <p>Explanation</p>
+      <p>✨  Explanation</p>
       </>
     )
   }
@@ -77,10 +75,14 @@ export function QuestionPage(
     <h2>{questionItem.questionText}</h2>
     <AnswerSection 
       questionItem={questionItem}
-      hasAnswered={hasAnswered}
-      hasAnsweredDispatch={hasAnsweredDispatch}
+      answerStateList={answerStateList}
+      answerStateDispatch={answerStateDispatch}
     ></AnswerSection>
-    {hintSection}
+      <Hint 
+        showHint={!answerState.hasBeenAnswered}
+        hintText={questionItem.hintText}
+        explanationText={questionItem.explanationText}
+      ></Hint>
     <Stack direction="horizontal" gap={3}>
     <Button className="mt-2"
       type="button"

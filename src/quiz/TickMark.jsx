@@ -4,21 +4,21 @@ import { useState } from "react";
 
 
 TickMark.propTypes = {
-  answerItem: PropTypes.arrayOf(PropTypes.shape({
+  answerItem: PropTypes.shape({
     id: PropTypes.number.isRequired,
     answerText: PropTypes.string.isRequired,
     correct: PropTypes.bool.isRequired,
   })
-)}
+}
 export function TickMark({answerItem}){
 
   // The answer item will have a field "correct".
   let tickMark;
   if(answerItem.correct){
-    tickMark = (<p>Correct</p>);
+    tickMark = (<div className="text-success">✔</div>);
   }
   else {
-    tickMark = (<p>Wrong</p>);
+    tickMark = (<div className="text-danger">✕</div>);
   }
   return(
     <>

@@ -4,8 +4,8 @@ import { ListGroup } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { quizData } from "./quizData";
-import { hasAnsweredReducer } from "./hasAnsweredReducer";
 import { TickMark } from "./TickMark";
+import { answerStateReducer } from "./answerStateReducer";
 
 
 AnswerSection.propTypes = {
@@ -20,58 +20,50 @@ AnswerSection.propTypes = {
       correct: PropTypes.bool.isRequired,
     }))
   }),
-  hasAnswered: PropTypes.bool.isRequired,
-  hasAnsweredDispatch: PropTypes.func.isRequired,
+  answerStateList: PropTypes.arrayOf(PropTypes.shape({
+    questionId: PropTypes.number.isRequired,
+    hasBeenAnswered: PropTypes.bool.isRequired,
+    answerId: PropTypes.number.isRequired,
+  })),
+  answerStateDispatch: PropTypes.func.isRequired,
 }
 export function AnswerSection({
   questionItem,
-  hasAnswered,
-  hasAnsweredDispatch,
+  answerStateList, answerStateDispatch
 }){
-  // If it is a new question, clear the checked
-  // of the checkboxes or radios.
-  const [isNewQuestion, setIsNewQuestion] = useState(true);
-  const [currentQuestionId, setCurrentQuestionId] = useState(0);
-
-  // isNewQuestion depends on the questionItem.id.
-  useEffect(()=>{
-    //const newId = questionItem.id;
-    // if the current question id is different
-    // from the state id, then set the question as new.
-    if(currentQuestionId !== questionItem.id){
-      setIsNewQuestion(true);
-      //setCurrentQuestionId(newId);
-    } else {
-      setIsNewQuestion(false);
-    }
-
-  }, [questionItem, /* currentQuestionId */])
-
+  // show a tick mark for correct or wrong answer.
+  const [isShowTickMark, setIsShowTickMark] = useState(false);
   // IMPORTANT: Name must be the same for 
   // the same checkbox or radio group. However,
   // id of the input field MUST be unique.
   const answerList = questionItem.answers;
-  const questionId = questionItem.id;
+  const answerState = answerStateList.find((a)=>(
+    a.questionId===questionItem.id
+  ));
 
   // if any answer is selected, dispatch the
   // hasAnswered to the parent component.
   // The parent component will show the explanation.
-  function handleAnswerChange(e){
-    const answerSelected = e.target.checked;
-    hasAnsweredDispatch({
+  function handleAnswerChange(e, answerItem){
+    // show a tick mark to the answer
+    setIsShowTickMark(true);
+    // update the state of the answer
+    answerStateDispatch({
       type: "answer_selected",
-      answerSelected: answerSelected,
+      questionId: questionItem.id,
+      hasBeenAnswered: e.target.checked,
+      answerId: answerItem.id,
     });
   }
 
   // If the question has been answered, show
   // the tick mark.
-  let tickMark;
-  if(hasAnswered){
-    tickMark = (<TickMark answerItem={null}></TickMark>);
-  } else {
-    tickMark = (<></>);
-  }
+  // let tickMark;
+  // if(hasAnswered){
+  //   tickMark = (<TickMark answerItem={null}></TickMark>);
+  // } else {
+  //   tickMark = (<></>);
+  // }
 
   return(
     <>
@@ -84,13 +76,18 @@ export function AnswerSection({
       <Form.Check
         key={`answer_${questionItem.id}_${a.id}`}
         type="radio"
-        id={`radio${questionId}-${a.id}`}
-        name={`radio${questionId}`}
+        id={`radio${questionItem.id}-${a.id}`}
+        name={`radio${questionItem.id}`}
         label={`${a.answerText} ${a.correct}`}
         value={a.correct}
-        onChange={(e)=>(handleAnswerChange(e))}
+        checked={answerState.hasBeenAnswered && (answerState.answerId===a.id)}
+        onChange={(e)=>(handleAnswerChange(e, a))}
       ></Form.Check>
-      {hasAnswered && <TickMark answerItem={a}></TickMark>}
+      { (isShowTickMark && answerState.hasBeenAnswered && 
+        (answerState.answerId===a.id)
+        ) &&
+        <TickMark answerItem={a}></TickMark>
+      }
       </ListGroup.Item>
     ))}
     </Form.Group>
