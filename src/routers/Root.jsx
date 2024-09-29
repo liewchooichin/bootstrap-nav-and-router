@@ -37,8 +37,8 @@ function Root() {
                     title="Dropdown"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
-                    <NavDropdown.Item as={Link} to="/page3">
-                      Action 3</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/unicorns">
+                      Unicorns</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/sidebar">
                       Page with sidebar
                     </NavDropdown.Item>
