@@ -3,22 +3,14 @@ import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
 import { unicornStructure } from "./unicornStructure";
 import { SidebarUnicorn } from "./SidebarUnicorn";
-import { postData } from "./utils";
-import { useParams } from "react-router-dom";
-//import axios from  "axios";
-import { ListUnicorns } from "./ListUnicorns";
+import { powers, elements } from "./unicornStructure";
+import { initialPower, initialElement } from "./unicornStructure";
 
-
-// Name of endpoint is /unicorns
-const currentEndpoint = "/unicorns";
+// create a context
+import { createContext } from "react";
+const EndpointContext = createContext(null);
 
 export function AddUnicorn(){
-
-    // if item id is available in the params,
-    // then fetch the item id.
-    //const params = useParams();
-    //const selectedUnicornId = params.unicornId;
-
     // For sidebar functions. DO NOT MODIFY.
     const [show, setShow] = useState(false);
     function handleClose(){
@@ -28,50 +20,60 @@ export function AddUnicorn(){
       setShow(true);
     }
   // state of the form
-  const [baseUrl, setBaseUrl] = useState("");
+  const [endpoint, setEndpoint] = useState("");
 
   // state 
   const [name, setName] = useState("");
   const [element, setElement] = useState(unicornStructure.element);
   const [power, setPower] = useState(unicornStructure.power);
-  // Show the list of items when at least one new item is added.
-  const [showListing, setShowListing] = useState(false);
+  const dummy = {
+    id: 111, name:"dummy",
+    element: {id: elements[0].id, elementName:elements[0].name, isElement: true},
+    power: [{id: powers[0].id, powerName:powers[0].name, isPower: true}],
+  }
+  const [data, setData] = useState(null);
 
   // change of endpoint
-  function handleBaseUrl(e){
-    setBaseUrl(e.target.value);
+  function handleEndpoint(e){
+    setEndpoint(e.target.value);
   }
   function handleElement(e){
     const eleId = Number.parseInt(e.target.value);
-    // look for the id in the current element list.
-    // then return the current target.value.
-    const newList = element.map((ele)=>{
-      if(ele.elementId===eleId){
-        const newElement = {...ele, isElement: true}
-        return newElement;
-      } else {
-        // the state has already toggle
-        const newElement = {...ele, isElement: false}
-        return newElement;
-      }
-    })
-    setElement(newList);
+    const ele = elements.find((e)=>(e.id===eleId));
+    const newElement = {
+      id: eleId,
+      elementName: ele.name,
+      isElement: e.target.checked,
+    }
+    setElement(newElement);
   }
   function handlePower(e){
-    // the pow id selected in the checkboxes
     const powId = Number.parseInt(e.target.value);
-    // look for the id the current list,
-    // then return the current target.value (checked
-    // or not checked).
-    const newList = power.map((p)=>{
-      if(p.powerId===powId){
-        const newPower = {...p, isPower: e.target.checked}
-        return newPower;
-      } else {
-        return p;
-      }
-    })
-    setPower(newList);
+    const pow = powers.find((p)=>(p.id===powId));
+    // if the power has already existed, removed it.
+    let currentPower = power;
+    // if the checkbox is cleared, remove the power from
+    // the current power state
+    if(!e.target.checked){
+      currentPower = currentPower.filter((p)=>(p.id!==pow.id));
+      setPower(currentPower);
+    }
+    else{
+    // create a new power
+    const newPower = {
+      id: powId,
+      powerName: pow.name,
+      isPower: e.target.checked,
+    }
+    let newPowerList;
+    // the list has items in it.
+    if(power.length > 0)
+      newPowerList = [...currentPower, newPower];
+    // this is a new list
+    if(power.length === 0)
+      newPowerList = [newPower];
+    setPower(newPowerList);
+    }
   }
   function handleAdd(e){
     const newData = {
@@ -79,34 +81,27 @@ export function AddUnicorn(){
       power: power,
       element: element,
     }
+    console.log(newData);
+    setData(newData);
     // reset the input fields
     setName("");
-    setElement(unicornStructure.element);
-    setPower(unicornStructure.power);
-    // IMPORTANT: Do NOT turn the data using JSON.
-    // Use the new data as it is.
-    const current_base_url = baseUrl;
-    postData(newData, current_base_url, currentEndpoint);
-    // Set the new listing
-    setShowListing(true);
+    setElement(initialElement);
+    setPower(initialPower);
     return;
   }
 
   return(
     <>
-    {/* For sidebar 
+    {/* For sidebar */}
     <Button variant="primary" onClick={handleShow}>
         List Unicorns
       </Button>
 
-
     <SidebarUnicorn 
       show={show} 
       handleClose={handleClose}
-      baseUrl={baseUrl}
-      endpoint={currentEndpoint}
+      endpoint={endpoint}
     ></SidebarUnicorn>
-      */}
 
     <h1>Unicorn Land</h1>
     <p>Create unicorns to populate the Unicorn Land.</p>
@@ -115,7 +110,7 @@ export function AddUnicorn(){
     <p>Step 2: Create a new unicorn.</p>
     <p>Step 3: Fetch the new unicorn that you have just created.</p>
 
-    <Form>
+    <Form method="POST">
       <Form.Group>
       <Form.Label>Endpoint from CrudCrud.com.
         <p>It should look like this: <code>https://crudcrud.com/api/e5602554f4524cd7a926a97b3da31ecb</code>
@@ -124,11 +119,11 @@ export function AddUnicorn(){
         type="text"
         id="API-ENDPOINT"
         name="API-ENDPOINT"
-        value={baseUrl}
-        onChange={handleBaseUrl}
+        value={endpoint}
+        onChange={handleEndpoint}
       ></Form.Control>
       <Button className="mb-3"
-        type="button"
+        type="submit"
         id="btnAddUnicorn"
         name="btnAddUnicorn"
       >Create endpoint</Button>
@@ -149,14 +144,13 @@ export function AddUnicorn(){
 
       <Form.Group>
         <Form.Label>Element</Form.Label>
-        { element.map((ele)=>(
+        { elements.map((e)=>(
           <Form.Check
-          key={ele.elementId}
+          key={e.id}
           type="radio"
           name="element"
-          value={ele.elementId}
-          label={ele.elementName}
-          checked={ele.isElement}
+          value={e.id}
+          label={e.name}
           onChange={(e)=>{handleElement(e)}}
         ></Form.Check>))}
       </Form.Group>
@@ -164,14 +158,13 @@ export function AddUnicorn(){
       <Form.Group>
         <Form.Label>Superpower</Form.Label>
         {
-          power.map((p)=>(
+          powers.map((p)=>(
           <Form.Check
-          key={p.powerId}
+          key={p.id}
           type="checkbox"
           name="power"
-          value={p.powerId}
-          label={p.powerName}
-          checked={p.isPower}
+          value={p.id}
+          label={p.name}
           onChange={(e)=>{handlePower(e)}}
         ></Form.Check>))}
       </Form.Group>
@@ -181,13 +174,6 @@ export function AddUnicorn(){
       type="button"
       onClick={(e)=>handleAdd(e)}
     >Add</Button>
-
-    {showListing && 
-      (<ListUnicorns
-        baseUrl={baseUrl}
-        endpoint={currentEndpoint}
-      ></ListUnicorns>)
-    }
 
     </>
   )
