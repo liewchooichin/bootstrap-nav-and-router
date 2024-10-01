@@ -42,3 +42,16 @@ export function putData(id, data, base_url, endpoint){
     console.error(err);
   })
 }
+
+export function getData(base_url, endpoint){
+  axios({
+    method: "GET",
+    baseURL: base_url,
+    url: endpoint,
+  }).then((response) => {
+    console.log(response.status);
+    console.log(response.data);
+  }).catch((err) => {
+    console.error(err);
+  })
+}

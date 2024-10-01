@@ -112,9 +112,11 @@ export function AddUnicorn(){
     <p>Step 2: Create a new unicorn.</p>
     <p>Step 3: Fetch the new unicorn that you have just created.</p>
 
+    <h3>Step 1: Get a new base URL</h3>
     <Form>
       <Form.Group>
-      <Form.Label>Endpoint from CrudCrud.com.
+      <Form.Label>
+        Endpoint from CrudCrud.com.
         <p>It should look like this: <code>https://crudcrud.com/api/e5602554f4524cd7a926a97b3da31ecb</code>
         </p></Form.Label>
       <Form.Control
@@ -132,7 +134,7 @@ export function AddUnicorn(){
       </Form.Group>
       {baseUrl && <p><i>Created base URL {baseUrl}.</i></p>}
 
-      <h3>Create a unicorn here.</h3>
+      <h3>Step 2: Create a unicorn here.</h3>
 
       <Form.Group>
         <Form.Label htmlFor="name">Name</Form.Label>
@@ -174,18 +176,22 @@ export function AddUnicorn(){
         ></Form.Check>))}
       </Form.Group>
     </Form>
-
-    <div className="d-flex justify-content-around">
+    
     <Button
       type="button"
       onClick={(e)=>handleAdd(e)}
-    >Add</Button>
-
+    >Add
+    </Button>
+    
+    <div className="mt-3">
+    <h3>Step 3: See the unicorn details.</h3>
     <Button 
       as={Link}
       to="/unicorns/listUnicorns"
       state={{baseUrl: `${baseUrl}`}}
-    >List unicorns</Button>
+    >List unicorns
+    </Button>
+    </div>
     </>
   )
 }

@@ -9,7 +9,7 @@ import { Link, Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { currentEndpoint } from "./AddUnicorn";
 import { deleteData } from "./utils";
-
+import styles from "./Unicorns.module.css";
 
 /* ListUnicorns.propTypes = {
   baseUrl: PropTypes.string.isRequired,
@@ -58,6 +58,17 @@ export function ListUnicorns(/*{baseUrl, endpoint} */){
     // Call the utils to DELETE the
     // item from the api library.
     deleteData(_id, baseUrl, currentEndpoint);
+    // load the data again
+    axios({
+      method: "GET",
+      baseURL: baseUrl,
+      url: currentEndpoint,
+    }).then((response) => {
+      console.log(response.status);
+      setData(response.data);
+    }).catch((err) => {
+      console.error(err);
+    })
     return;
   }
 
@@ -77,8 +88,8 @@ export function ListUnicorns(/*{baseUrl, endpoint} */){
           i.element.map((ele)=>{
             if(ele.isElement){
             return(
-              <ul key={ele.elementId} style={{listStyleType: "✨"}}>
-                <li>{ele.elementName}</li>
+              <ul key={ele.elementId}>
+                <li className={styles.elementListStyle}>{" "}{ele.elementName}</li>
               </ul>
             )}
           })
@@ -89,8 +100,8 @@ export function ListUnicorns(/*{baseUrl, endpoint} */){
           i.power.map((pow)=>{
             if(pow.isPower){
               return (
-              <ul key={pow.powerId} style={{listStyleType: "❇"}}>
-              <li>{pow.powerName}</li>
+              <ul key={pow.powerId} >
+              <li className={styles.powerListStyle}>{" "}{pow.powerName}</li>
               </ul>
             )}
           })}
