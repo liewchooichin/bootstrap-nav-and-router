@@ -8,6 +8,7 @@ import Stack from "react-bootstrap/Stack";
 AnswerSection.propTypes = {
   questionItem: PropTypes.shape({
     id: PropTypes.number.isRequired,
+    questionType: PropTypes.string.isRequired,
     questionText: PropTypes.string.isRequired,
     hintText: PropTypes.string.isRequired,
     explanationText: PropTypes.string.isRequired,
@@ -22,7 +23,7 @@ AnswerSection.propTypes = {
     hasBeenAnswered: PropTypes.bool.isRequired,
     answerId: PropTypes.number.isRequired,
   })),
-  answerStateDispatch: PropTypes.func.isRequired,
+  answerStateDispatch: PropTypes.func,
 }
 export function AnswerSection({
   questionItem,
@@ -53,15 +54,7 @@ export function AnswerSection({
     });
   }
 
-  // If the question has been answered, show
-  // the tick mark.
-  // let tickMark;
-  // if(hasAnswered){
-  //   tickMark = (<TickMark answerItem={null}></TickMark>);
-  // } else {
-  //   tickMark = (<></>);
-  // }
-
+  // ((questionItem.questionType==="single")&&(answerState.answerId===a.id))
   return(
     <>
     <ListGroup>
@@ -78,12 +71,12 @@ export function AnswerSection({
         name={`radio${questionItem.id}`}
         label={`${a.answerText}`}
         value={a.correct}
-        checked={answerState.hasBeenAnswered && (answerState.answerId===a.id)}
+        checked={answerState.hasBeenAnswered && 
+          (answerState.answerId===a.id)}
         onChange={(e)=>(handleAnswerChange(e, a))}
       ></Form.Check>
       { (isShowTickMark && answerState.hasBeenAnswered && 
-        (answerState.answerId===a.id)
-        ) &&
+        (answerState.answerId===a.id)) &&
         <TickMark answerItem={a}></TickMark>
       }
       </Stack>

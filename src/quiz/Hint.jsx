@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 function CustomToggle({ children, eventKey }) {
   const decoratedOnClick = useAccordionButton(eventKey, () =>
-    console.log('totally custom!'),
+    console.log('Custom accordian!'),
   );
 
   return (

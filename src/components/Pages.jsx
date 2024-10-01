@@ -3,6 +3,8 @@ import {LinkContainer} from "react-router-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import Button from "react-bootstrap/Button";
+import { useParams } from "react-router-dom";
+
 
 export function Page1(){
   return(
@@ -79,6 +81,9 @@ export function Page4(){
 }
 
 export function Page5(){
+  const params = useParams();
+  //console.log(params);
+
   return (
     <>
     <h1>Action 5</h1>

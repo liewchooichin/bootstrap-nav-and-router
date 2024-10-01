@@ -9,6 +9,11 @@ import { PageWithSidebar } from "../components/PageWithSidebar";
 import { WebAPI } from "../webapi/WebAPI";
 import { QuizMain } from "../quiz/QuizMain";
 import { QuestionPage } from "../quiz/QuestionPage";
+import { SidebarUnicorn } from "../unicorns/SidebarUnicorn";
+import { AddUnicorn } from "../unicorns/AddUnicorn";
+import { EditUnicorn } from "../unicorns/EditUnicorn";
+import { ListUnicorns } from "../unicorns/ListUnicorns";
+import { IndexUnicorns } from "../unicorns/IndexUnicorns";
 
 
 export const router = createBrowserRouter([
@@ -36,15 +41,29 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: "/page3",
-        element: <Page3 />,
+        path: "/unicorns",
+        element: <IndexUnicorns />,
+        children: [
+          {
+            path: "addUnicorn",
+            element: <AddUnicorn />
+          },
+          {
+            path: "listUnicorns",
+            element: <ListUnicorns />
+          },
+          {
+            path: ":editUnicorn/:unicornId",
+            element: <EditUnicorn />
+          },
+        ]
       },
       {
         path: "/page4",
         element: <Page4 />,
       },
       {
-        path: "/page5",
+        path: "/page5/:itemId?",
         element: <Page5 />,
       },
       {

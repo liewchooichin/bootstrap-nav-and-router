@@ -17,9 +17,9 @@ export const initialAnswerState = {
 export const initialAnswerList = [];
 
 for(let i=0; i<quizLength; i++){
-  console.log(`${i}: ${quizData[i].id}`);
+  //console.log(`${i}: ${quizData[i].id}`);
   initialAnswerList.push({...initialAnswerState, 
     questionId: quizData[i].id});
   
-  console.log(`${i}: ${initialAnswerList[i].id} - ${quizData[i].id}`);
+  //console.log(`${i}: ${initialAnswerList[i].id} - ${quizData[i].id}`);
 }
