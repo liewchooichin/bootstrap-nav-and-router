@@ -13,7 +13,7 @@ export function questionPageReducers(questionNum, action){
       let nextQuestion = action.questionNum + 1;
     // check the question number to be less than the max
     // number of questions.
-    nextQuestion = (nextQuestion <= quizLength-1) 
+    nextQuestion = (nextQuestion < quizLength-1) 
     ? nextQuestion 
     : quizLength-1;
     return nextQuestion;

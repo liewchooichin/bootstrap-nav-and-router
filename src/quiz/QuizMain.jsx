@@ -3,7 +3,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { Link, Outlet } from "react-router-dom";
 import { useState, useReducer } from "react";
 import { quizReducer } from "./quizReducer";
-import { quizData } from "./quizData";
+import { quizData, quizLength } from "./quizData";
 import Button from "react-bootstrap/Button";
 import { startQuizReducer } from "./startQuizReducer";
 import { QuestionPage } from "./QuestionPage";
@@ -23,6 +23,44 @@ export function QuizMain(){
   const [answerStateList, answerStateDispatch] =
     useReducer(answerStateReducer, initialAnswerList);  
   const [scoreQuiz, scoreQuizDispatch] = useReducer(scoreQuizReducer, null);
+
+  // Calculate the score using the static question data
+  // and the answerStateList
+  function calculateScore(){
+    // for each item in the answerStateList,
+    // get the questionId. Retrieve the question item from
+    // the question data.
+    // From the question item, get the answer id in the
+    // question item. Compare the answer id wit the answer id
+    // in the answerStateList.
+    let result = 0;
+    let numAnswered = 0;
+
+    // Find out the number of question answered
+    for(let i=0; i<answerStateList.length; i++){
+      // if has been answered is true, increment the
+      // numAnswered
+      if(answerStateList[i].hasBeenAnswered){
+        numAnswered = numAnswered + 1;
+      }
+    }
+
+    for(let i=0; i<numAnswered; i++){
+      const selectedAns = answerStateList[i];
+      const quesItem = quizData.find((i)=>(
+        i.id===selectedAns.questionId
+      ));
+      console.log(quesItem.questionText);
+      const ansItem = quesItem.answers.find((i)=>(
+        i.id===selectedAns.answerId
+      ))
+      console.log(ansItem.answerText, ansItem.correct);
+      if(ansItem.correct){
+        result = result + 1;
+      }
+    }
+    return [result, numAnswered];
+  }
 
   /**Event handler */
   function handleBtnStart(){
@@ -61,7 +99,10 @@ export function QuizMain(){
       >{scoreQuiz ? "Close Score" : "Show Score"}
       </Button>
 
-      {scoreQuiz && (<p>Your score</p>)}
+      {scoreQuiz && (<><h3>Your score: </h3>
+        <p>Correct: {calculateScore()[0]} out of {quizLength}</p>
+        <p>Answered: {calculateScore()[1]} out of {quizLength}</p>
+        </>)}
 
       <QuestionPage 
         questionList={questionList}
