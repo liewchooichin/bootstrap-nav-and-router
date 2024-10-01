@@ -7,10 +7,10 @@ import { postData } from "./utils";
 import { useParams } from "react-router-dom";
 //import axios from  "axios";
 import { ListUnicorns } from "./ListUnicorns";
-
+import { Link, Outlet } from "react-router-dom";
 
 // Name of endpoint is /unicorns
-const currentEndpoint = "/unicorns";
+export const currentEndpoint = "/unicorns";
 
 export function AddUnicorn(){
 
@@ -88,25 +88,22 @@ export function AddUnicorn(){
     const current_base_url = baseUrl;
     postData(newData, current_base_url, currentEndpoint);
     // Set the new listing
-    setShowListing(true);
+    //setShowListing(true);
     return;
   }
 
   return(
     <>
-    {/* For sidebar 
-    <Button variant="primary" onClick={handleShow}>
+    {/* <Button variant="primary" onClick={handleShow}>
         List Unicorns
       </Button>
-
-
     <SidebarUnicorn 
       show={show} 
       handleClose={handleClose}
       baseUrl={baseUrl}
       endpoint={currentEndpoint}
-    ></SidebarUnicorn>
-      */}
+    ></SidebarUnicorn> */}
+    
 
     <h1>Unicorn Land</h1>
     <p>Create unicorns to populate the Unicorn Land.</p>
@@ -131,8 +128,9 @@ export function AddUnicorn(){
         type="button"
         id="btnAddUnicorn"
         name="btnAddUnicorn"
-      >Create endpoint</Button>
+      >Create base URL</Button>
       </Form.Group>
+      {baseUrl && <p><i>Created base URL {baseUrl}.</i></p>}
 
       <h3>Create a unicorn here.</h3>
 
@@ -177,18 +175,17 @@ export function AddUnicorn(){
       </Form.Group>
     </Form>
 
+    <div className="d-flex justify-content-around">
     <Button
       type="button"
       onClick={(e)=>handleAdd(e)}
     >Add</Button>
 
-    {showListing && 
-      (<ListUnicorns
-        baseUrl={baseUrl}
-        endpoint={currentEndpoint}
-      ></ListUnicorns>)
-    }
-
+    <Button 
+      as={Link}
+      to="/unicorns/listUnicorns"
+      state={{baseUrl: `${baseUrl}`}}
+    >List unicorns</Button>
     </>
   )
 }

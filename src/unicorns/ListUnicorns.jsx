@@ -5,29 +5,40 @@ import { useParams } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import PropTypes from "prop-types";
 import Button from "react-bootstrap/Button";
+import { Link, Outlet } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { currentEndpoint } from "./AddUnicorn";
+import { deleteData } from "./utils";
 
-ListUnicorns.propTypes = {
+
+/* ListUnicorns.propTypes = {
   baseUrl: PropTypes.string.isRequired,
   endpoint: PropTypes.string.isRequired,
-}
-export function ListUnicorns({baseUrl, endpoint}){
+} */
+export function ListUnicorns(/*{baseUrl, endpoint} */){
 
+  // get the base url of the api server
+  const {state} = useLocation();
+  const baseUrl = state.baseUrl;
+  console.log("List unicorns " + baseUrl);
   // state 
   const [name, setName] = useState("");
   const [element, setElement] = useState([]);
   const [power, setPower] = useState([]);  
   const [data, setData] = useState([]);
   // editing the form
-  const [isEdit, setIsEdit] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
   
   useEffect(()=>{
-    // If the item id is available in the params url
+    // get the whole list of unicorns.
     let ignore = false;
     if(!ignore){
+      // reset the delete state to false
+      setIsDelete(false);
       axios({
         method: "GET",
         baseURL: baseUrl,
-        url: endpoint,
+        url: currentEndpoint,
       }).then((response) => {
         console.log(response.status);
         console.log(response.data);
@@ -37,151 +48,66 @@ export function ListUnicorns({baseUrl, endpoint}){
       })
     }
     // clean up
-    return (()=>{ignore=true; console.log("Clean up")})
-  }, [baseUrl, endpoint]);
-  
-  // event handler
-  function handleElement(e){
-    const eleId = Number.parseInt(e.target.value);
-    // look for the id in the current element list.
-    // then return the current target.value.
-    const newList = element.map((ele)=>{
-      if(ele.elementId===eleId){
-        const newElement = {...ele, isElement: true}
-        return newElement;
-      } else {
-        // the state has already toggle
-        const newElement = {...ele, isElement: false}
-        return newElement;
-      }
-    })
-    setElement(newList);
-  }
-  function handlePower(e){
-    // the pow id selected in the checkboxes
-    const powId = Number.parseInt(e.target.value);
-    // look for the id the current list,
-    // then return the current target.value (checked
-    // or not checked).
-    const newList = power.map((p)=>{
-      if(p.powerId===powId){
-        const newPower = {...p, isPower: e.target.checked}
-        return newPower;
-      } else {
-        return p;
-      }
-    })
-    setPower(newList);
-  }
+    return (()=>{
+      ignore=true; 
+      console.log("Clean up")})
+  }, [baseUrl]);
 
-  // handle save, edit, undo
-  function handleEdit(e){
-    // set edit is true
-    setIsEdit(true);
-    // set the input fields to the
-    // state variables
-    // find the corresponding item.
-    
-  }
-  function handleSave(e){
-    // after saving, reset the edit
-    // button to false
-    setIsEdit(false);
-
-    // send PUT request
-  }
-  function handleUndo(e){
-    // revert the data to the original
-    // one at the initially loaded data.
-    return;
-  }
-  function handleDelete(e){
-    setIsEdit(false);
+  function handleDelete(e, _id){
+    setIsDelete(true);
+    // Call the utils to DELETE the
+    // item from the api library.
+    deleteData(_id, baseUrl, currentEndpoint);
     return;
   }
 
   return(
     <>
     <h1>Unicorns in Unicorn Land</h1>
+    
+    <Outlet />
+
     <ListGroup>
       {
         data.map((i)=>(
-      <ListGroup.Item key={i._id}>
+        <ListGroup.Item key={i._id}>
         <h3>{i.name}</h3>
-        <Form>
-        <Form.Group>
-        <Form.Label htmlFor="name">Name</Form.Label>
-        <Form.Control 
-          type="text"
-          id="name"
-          name="name"
-          value={i.name}
-          disabled={!isEdit}
-          onChange={(e)=>{setName(e.target.value)}}
-        ></Form.Control>
-      </Form.Group>
-
-      <Form.Group>
-        <Form.Label>Element</Form.Label>
-        { i.element.map((ele)=>(
-          <Form.Check
-          key={ele.elementId}
-          type="radio"
-          name="element"
-          value={ele.elementId}
-          label={ele.elementName}
-          checked={ele.isElement}
-          disabled={!isEdit}
-          onChange={(e)=>{handleElement(e)}}
-        ></Form.Check>))}
-      </Form.Group>
-
-      <Form.Group>
-        <Form.Label>Superpower</Form.Label>
+        <h4>Element</h4>
         {
-          i.power.map((pow)=>(
-          <Form.Check
-          key={pow.powerId}
-          type="checkbox"
-          name="power"
-          value={pow.powerId}
-          label={pow.powerName}
-          checked={pow.isPower}
-          disabled={!isEdit}
-          onChange={(e)=>{handlePower(e)}}
-        ></Form.Check>))}
-      </Form.Group>
-      </Form>
+          i.element.map((ele)=>{
+            if(ele.isElement){
+            return(
+              <ul key={ele.elementId} style={{listStyleType: "✨"}}>
+                <li>{ele.elementName}</li>
+              </ul>
+            )}
+          })
+        }
+        
+        <h4>Superpowers</h4>
+        {
+          i.power.map((pow)=>{
+            if(pow.isPower){
+              return (
+              <ul key={pow.powerId} style={{listStyleType: "❇"}}>
+              <li>{pow.powerName}</li>
+              </ul>
+            )}
+          })}
       
-      {!isEdit && (
+        <div className="d-flex justify-content-around">
         <Button
-          type="button"
-          name="btnEdit"
-          onClick={(e)=>handleEdit(e)}
+            as={Link}
+            to={`/unicorns/editUnicorn/${i._id}`}
+            state={{ baseUrl: `${baseUrl}` }}
         >Edit</Button>
-      )}
-      {!isEdit && (
+      
         <Button
           type="button"
-          name="btnEdit"
-          onClick={(e)=>handleDelete(e)}
-        >Deete</Button>
-      )}
-      {isEdit && (
-        <Button
-          type="button"
-          name="btnEdit"
-          onClick={(e)=>handleSave(e)}
-        >Save</Button>
-      )}
-      {isEdit && (
-        <Button
-          type="button"
-          name="btnEdit"
-          onClick={(e)=>handleUndo(e)}
-        >Undo</Button>
-      )}
-
+          name="btnDelete"
+          onClick={(e)=>handleDelete(e, i._id)}
+        >Delete</Button>
+        </div>
       </ListGroup.Item>
       ))}
     </ListGroup>

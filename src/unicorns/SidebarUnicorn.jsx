@@ -50,12 +50,11 @@ export function SidebarUnicorn({show, handleClose, baseUrl, endpoint}) {
   
   return (
     <>
-      {/*
-      <Button variant="primary" onClick={handleShow}>
+      
+      {/* <Button variant="primary" onClick={handleShow}>
         List Unicorns
-      </Button>
-      */}
-
+      </Button> */}
+      
       <Offcanvas show={show} onHide={onHide}>
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Unicorn Land</Offcanvas.Title>

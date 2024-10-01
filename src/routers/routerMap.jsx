@@ -11,8 +11,10 @@ import { QuizMain } from "../quiz/QuizMain";
 import { QuestionPage } from "../quiz/QuestionPage";
 import { SidebarUnicorn } from "../unicorns/SidebarUnicorn";
 import { AddUnicorn } from "../unicorns/AddUnicorn";
-
+import { EditUnicorn } from "../unicorns/EditUnicorn";
 import { ListUnicorns } from "../unicorns/ListUnicorns";
+import { IndexUnicorns } from "../unicorns/IndexUnicorns";
+
 
 export const router = createBrowserRouter([
   {
@@ -40,17 +42,21 @@ export const router = createBrowserRouter([
       },
       {
         path: "/unicorns",
-        element: <AddUnicorn />,
-        /* children: [
+        element: <IndexUnicorns />,
+        children: [
           {
-            index: true,
+            path: "addUnicorn",
             element: <AddUnicorn />
           },
           {
-            path: ":unicornId",
+            path: "listUnicorns",
             element: <ListUnicorns />
           },
-        ] */
+          {
+            path: ":editUnicorn/:unicornId",
+            element: <EditUnicorn />
+          },
+        ]
       },
       {
         path: "/page4",
