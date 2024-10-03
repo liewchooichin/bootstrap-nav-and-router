@@ -14,6 +14,8 @@ import { AddUnicorn } from "../unicorns/AddUnicorn";
 import { EditUnicorn } from "../unicorns/EditUnicorn";
 import { ListUnicorns } from "../unicorns/ListUnicorns";
 import { IndexUnicorns } from "../unicorns/IndexUnicorns";
+import { Jumble } from "../jumble/Jumble";
+import { Quote } from "../quote/Quote";
 
 
 export const router = createBrowserRouter([
@@ -57,6 +59,14 @@ export const router = createBrowserRouter([
             element: <EditUnicorn />
           },
         ]
+      },
+      {
+        path: "/product-list",
+        element: <Jumble />,
+      },
+      {
+        path: "/quotes",
+        element: <Quote />
       },
       {
         path: "/page4",

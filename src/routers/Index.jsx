@@ -1,8 +1,13 @@
 
 export function Index(){
   return(
+    <>
     <h1>
-      Index page
+      About
     </h1>
+    <p>
+      This page contains mini-projects done using <b>React</b>.
+    </p>
+    </>
   )
 }

@@ -34,11 +34,16 @@ function Root() {
                   <Nav.Link as={Link} to="/unicorns">Unicorns</Nav.Link>
                   <Nav.Link as={Link} to="/quiz">Quiz</Nav.Link>
                   <NavDropdown
-                    title="Dropdown"
+                    title="Mini projects"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
+                    <NavDropdown.Item as={Link} to="/product-list">
+                    Jumble-Jumble Product List</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/quotes">
+                    Random Quotes</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/webapi">
-                      JSONPlaceHolder</NavDropdown.Item>
+                      JSONPlaceHolder
+                      </NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/sidebar">
                       Page with sidebar
                     </NavDropdown.Item>
