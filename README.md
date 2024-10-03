@@ -2,6 +2,8 @@
 
 Features to show:
 
+- Add in **Quotes** from the class assignment also.
+
 - **Jumble-Jumble Product List** is an assignment using **axios** api package
 
 - **Unicorns** uses **crudcrud.com** to create items using api call.
