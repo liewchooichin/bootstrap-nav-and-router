@@ -14,4 +14,20 @@ Features to show:
 
 Using simple router map and navigation to see how the **Router** and **Link** work.
 
-The examples use various **navigation** components from **react-bootstrap**. The examples make use of **Bootstrap** and **react-router-dom**.
+The examples use various **navigation** components from **react-bootstrap**. 
+
+The examples make use of **Bootstrap** and **react-router-dom**.
+
+
+## Configuration
+
+Using Visual Studio Code to create Static Web App:
+
+- Location of application code: /
+- API: "" blank
+- Location of build output: "/dist"
+
+## Public folder
+
+The content cardcontent.json must be put in the public folder.
+
