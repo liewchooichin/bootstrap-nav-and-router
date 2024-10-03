@@ -31,14 +31,14 @@ function Root() {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link as={Link} to="/webapi">Web API</Nav.Link>
+                  <Nav.Link as={Link} to="/unicorns">Unicorns</Nav.Link>
                   <Nav.Link as={Link} to="/quiz">Quiz</Nav.Link>
                   <NavDropdown
                     title="Dropdown"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
-                    <NavDropdown.Item as={Link} to="/unicorns">
-                      Unicorns</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/webapi">
+                      JSONPlaceHolder</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/sidebar">
                       Page with sidebar
                     </NavDropdown.Item>
