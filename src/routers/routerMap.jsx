@@ -33,12 +33,12 @@ export const router = createBrowserRouter([
       {
         path: "/quiz",
         element: <QuizMain />,
-        children: [
+        /* children: [
           {
             path: "/quiz/:questionId",
             element: <QuestionPage />,
           },
-        ],
+        ], */
       },
       {
         path: "/unicorns",

@@ -24,16 +24,7 @@ export function QuizMain(){
     useReducer(answerStateReducer, initialAnswerList);  
   const [scoreQuiz, scoreQuizDispatch] = useReducer(scoreQuizReducer, null);
 
-  // Calculate the score using the static question data
-  // and the answerStateList
-  function calculateScore(){
-    // for each item in the answerStateList,
-    // get the questionId. Retrieve the question item from
-    // the question data.
-    // From the question item, get the answer id in the
-    // question item. Compare the answer id wit the answer id
-    // in the answerStateList.
-    let result = 0;
+  function calculateNumAnswered(){
     let numAnswered = 0;
 
     // Find out the number of question answered
@@ -44,22 +35,40 @@ export function QuizMain(){
         numAnswered = numAnswered + 1;
       }
     }
+    return numAnswered;
+  }
 
-    for(let i=0; i<numAnswered; i++){
+  // Calculate the score using the static question data
+  // and the answerStateList
+  function calculateScore(){
+    // for each item in the answerStateList,
+    // get the questionId. Retrieve the question item from
+    // the question data.
+    // From the question item, get the answer id in the
+    // question item. Compare the answer id wit the answer id
+    // in the answerStateList.
+    let result = 0;
+
+    for(let i=0; i<quizLength; i++){
       const selectedAns = answerStateList[i];
-      const quesItem = quizData.find((i)=>(
-        i.id===selectedAns.questionId
-      ));
-      console.log(quesItem.questionText);
-      const ansItem = quesItem.answers.find((i)=>(
-        i.id===selectedAns.answerId
-      ))
-      console.log(ansItem.answerText, ansItem.correct);
-      if(ansItem.correct){
-        result = result + 1;
+      // This will take care of the situation where
+      // user skips questions.
+      // Only if the question has been answered.
+      if(selectedAns.hasBeenAnswered){
+          const quesItem = quizData.find((i)=>(
+          i.id===selectedAns.questionId
+        ));
+        console.log(quesItem.questionText);
+        const ansItem = quesItem.answers.find((i)=>(
+          i.id===selectedAns.answerId
+        ))
+        console.log(ansItem.answerText, ansItem.correct);
+        if(ansItem.correct){
+          result = result + 1;
+        }
       }
     }
-    return [result, numAnswered];
+    return result;
   }
 
   /**Event handler */
@@ -99,10 +108,13 @@ export function QuizMain(){
       >{scoreQuiz ? "Close Score" : "Show Score"}
       </Button>
 
-      {scoreQuiz && (<><h3>Your score: </h3>
-        <p>Correct: {calculateScore()[0]} out of {quizLength}</p>
-        <p>Answered: {calculateScore()[1]} out of {quizLength}</p>
-        </>)}
+      {scoreQuiz && (<>
+        <h3>Your score: </h3>
+        <p>Correct: {calculateScore()} out of {quizLength}</p>
+        </>)
+      }
+
+      <p>Answered: {calculateNumAnswered()} out of {quizLength}</p>
 
       <QuestionPage 
         questionList={questionList}
