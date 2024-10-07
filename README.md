@@ -2,6 +2,8 @@
 
 Features to show:
 
+- Interesting **streets and places** in Singapore uses datasets provided by data.gov.sg-NLB.
+
 - Add in **Quotes** from the class assignment also.
 
 - **Jumble-Jumble Product List** is an assignment using **axios** api package

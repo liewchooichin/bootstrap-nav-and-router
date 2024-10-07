@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MapContainer , TileLayer, useMap, Marker, Popup, GeoJSON } 
+import { MapContainer , TileLayer, Marker, Popup, GeoJSON } 
   from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from 'leaflet';
@@ -89,13 +89,22 @@ export function LeafletPlaces(){
 
   return(
     <>
+    <h2>Street and places in Singapore</h2>
+    <p>Dataset is obtained from
+      <a href="https://data.gov.sg/datasets?topics=education&page=1&resultId=d_9606da8c76387bf74627b3e7797f781d">
+      data.gov.sg - Topic - Education
+      </a>
+    </p>
     {
       (isLoading && (<p>Loading</p>))
     }
     {
       ((coordinates!=null && !isLoading) && (
-        <div /* id={myStyles.map} */>
-        <p>Lat {coordinates.lat}, Lng {coordinates.lng}</p>
+        <div>
+
+        <p>Centre of the map: Tanjong Pagar Plaza 
+        &#x28;{coordinates.lat}, {coordinates.lng}&#x29;
+        </p>
 
         <MapContainer 
           center={coordinates} zoom={13} 
