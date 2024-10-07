@@ -99,7 +99,7 @@ export function LeafletPlaces(){
       (isLoading && (<p>Loading</p>))
     }
     {
-      ((coordinates!=null && !isLoading) && (
+      ((geoData!=null && coordinates!=null && !isLoading) && (
         <div>
 
         <p>Centre of the map: Tanjong Pagar Plaza 
