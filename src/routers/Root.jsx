@@ -38,12 +38,15 @@ function Root() {
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
                     <NavDropdown.Item as={Link} to="/product-list">
-                    Jumble-Jumble Product List</NavDropdown.Item>
+                      Jumble-Jumble Product List</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/quotes">
-                    Random Quotes</NavDropdown.Item>
+                      Random Quotes</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/webapi">
                       JSONPlaceHolder
                       </NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/interesting-places">
+                      Interesting places
+                    </NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/sidebar">
                       Page with sidebar
                     </NavDropdown.Item>

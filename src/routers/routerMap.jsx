@@ -16,6 +16,7 @@ import { ListUnicorns } from "../unicorns/ListUnicorns";
 import { IndexUnicorns } from "../unicorns/IndexUnicorns";
 import { Jumble } from "../jumble/Jumble";
 import { Quote } from "../quote/Quote";
+import { LeafletPlaces } from "../places/LeafletPlaces";
 
 
 export const router = createBrowserRouter([
@@ -35,12 +36,6 @@ export const router = createBrowserRouter([
       {
         path: "/quiz",
         element: <QuizMain />,
-        /* children: [
-          {
-            path: "/quiz/:questionId",
-            element: <QuestionPage />,
-          },
-        ], */
       },
       {
         path: "/unicorns",
@@ -59,6 +54,10 @@ export const router = createBrowserRouter([
             element: <EditUnicorn />
           },
         ]
+      },
+      {
+        path: "/interesting-places",
+        element: <LeafletPlaces />
       },
       {
         path: "/product-list",
