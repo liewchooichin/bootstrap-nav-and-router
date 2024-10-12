@@ -109,7 +109,9 @@ export function LeafletPlaces(){
         <MapContainer 
           center={coordinates} zoom={13} 
           scrollWheelZoom={true} 
-          style={{width:"100vh", height:"100vh"}}>
+          style={{width:"100vh", height:"100vh"}}
+          invalidateSize={()=>this.invalidateSize(true)}
+          >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
